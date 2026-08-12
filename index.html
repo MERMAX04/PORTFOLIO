@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — ชื่อ นามสกุล</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chonburi&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1116;
+    --bg-soft:#161b22;
+    --panel:#1b222c;
+    --line:rgba(255,255,255,.08);
+    --ink:#eef2f7;
+    --ink-dim:#a9b4c2;
+    --ink-faint:#6b7686;
+    --accent:#e8b84b;      /* warm gold */
+    --accent-2:#4cc4b0;    /* teal */
+    --accent-soft:rgba(232,184,75,.12);
+    --radius:18px;
+    --maxw:1080px;
+    --font-display:'Chonburi', serif;
+    --font-body:'IBM Plex Sans Thai', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-body);
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.75;
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* atmospheric background */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-2;
+    background:
+      radial-gradient(60vw 60vw at 82% -8%, rgba(232,184,75,.10), transparent 60%),
+      radial-gradient(50vw 50vw at -10% 20%, rgba(76,196,176,.10), transparent 55%),
+      var(--bg);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:-1;opacity:.035;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(14px);
+    background:rgba(14,17,22,.72);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{font-family:var(--font-display);font-size:1.15rem;letter-spacing:.3px;color:var(--ink)}
+  .brand span{color:var(--accent)}
+  nav.links{display:flex;gap:4px;flex-wrap:wrap}
+  nav.links a{
+    font-size:.86rem;color:var(--ink-dim);padding:8px 12px;border-radius:999px;
+    transition:.25s;white-space:nowrap;
+  }
+  nav.links a:hover{color:var(--ink);background:var(--accent-soft)}
+  .menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--ink);
+    padding:8px 12px;border-radius:10px;font-family:var(--font-body);cursor:pointer}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;padding:96px 0 72px}
+  .eyebrow{
+    font-family:var(--font-mono);font-size:.78rem;letter-spacing:3px;text-transform:uppercase;
+    color:var(--accent);margin-bottom:18px;
+  }
+  .hero h1{
+    font-family:var(--font-display);font-weight:400;line-height:1.12;
+    font-size:clamp(2.4rem,6vw,4.4rem);color:var(--ink);letter-spacing:.5px;
+  }
+  .hero h1 .thin{color:var(--ink-dim)}
+  .hero .role{font-size:clamp(1rem,2.4vw,1.35rem);color:var(--ink-dim);margin-top:20px;max-width:640px}
+  .hero .dept{color:var(--ink-faint);margin-top:8px;font-size:.98rem}
+
+  .hero-grid{display:grid;grid-template-columns:1.25fr .9fr;gap:56px;align-items:center}
+  @media(max-width:820px){.hero-grid{grid-template-columns:1fr;gap:36px}}
+
+  .portrait{
+    position:relative;aspect-ratio:4/5;border-radius:var(--radius);overflow:hidden;
+    border:1px solid var(--line);
+    background:
+      linear-gradient(160deg,rgba(232,184,75,.18),rgba(76,196,176,.14)),
+      var(--panel);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 30px 60px -30px rgba(0,0,0,.7);
+  }
+  .portrait .ph{color:var(--ink-faint);font-family:var(--font-mono);font-size:.8rem;text-align:center;padding:20px}
+  .portrait .ring{position:absolute;inset:14px;border:1px solid rgba(255,255,255,.14);border-radius:12px}
+
+  .contact-card{margin-top:34px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:640px}
+  .contact-card .item{
+    border:1px solid var(--line);background:var(--bg-soft);border-radius:12px;padding:12px 14px;
+  }
+  .contact-card .k{font-family:var(--font-mono);font-size:.68rem;letter-spacing:1.5px;
+    text-transform:uppercase;color:var(--ink-faint)}
+  .contact-card .v{color:var(--ink);font-size:.92rem;word-break:break-word}
+
+  .scholar{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .scholar a{
+    font-family:var(--font-mono);font-size:.8rem;padding:8px 14px;border-radius:999px;
+    border:1px solid var(--line);color:var(--ink-dim);transition:.25s;
+  }
+  .scholar a:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+
+  /* ---------- SECTIONS ---------- */
+  section.block{padding:64px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:34px}
+  .sec-no{font-family:var(--font-mono);color:var(--accent);font-size:.9rem;letter-spacing:1px}
+  .sec-head h2{font-family:var(--font-display);font-weight:400;font-size:clamp(1.6rem,3.6vw,2.4rem);color:var(--ink)}
+  .sec-head .en{color:var(--ink-faint);font-family:var(--font-mono);font-size:.8rem;letter-spacing:1px;margin-left:auto}
+
+  /* timeline */
+  .timeline{position:relative;padding-left:28px}
+  .timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:1px;background:var(--line)}
+  .tl-item{position:relative;padding:0 0 30px}
+  .tl-item::before{content:"";position:absolute;left:-27px;top:8px;width:11px;height:11px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--accent)}
+  .tl-item .yr{font-family:var(--font-mono);color:var(--accent-2);font-size:.82rem;letter-spacing:.5px}
+  .tl-item .ti{color:var(--ink);font-weight:500;margin-top:2px}
+  .tl-item .de{color:var(--ink-dim);font-size:.95rem}
+
+  /* chips */
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{
+    padding:9px 16px;border-radius:12px;border:1px solid var(--line);background:var(--bg-soft);
+    color:var(--ink-dim);font-size:.92rem;transition:.25s;
+  }
+  .chip:hover{color:var(--ink);border-color:var(--accent-2);transform:translateY(-2px)}
+
+  /* card grid */
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+  .card{
+    border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);padding:22px;
+    transition:.3s;position:relative;overflow:hidden;
+  }
+  .card:hover{transform:translateY(-4px);border-color:rgba(232,184,75,.4)}
+  .card .tag{font-family:var(--font-mono);font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent)}
+  .card h3{font-weight:600;margin:8px 0 6px;color:var(--ink);font-size:1.02rem;line-height:1.4}
+  .card p{color:var(--ink-dim);font-size:.92rem}
+
+  /* publications list */
+  .pub{border-left:2px solid var(--line);padding:6px 0 6px 20px;margin-bottom:16px;transition:.25s}
+  .pub:hover{border-color:var(--accent)}
+  .pub .venue{font-family:var(--font-mono);font-size:.74rem;letter-spacing:1px;color:var(--accent-2);text-transform:uppercase}
+  .pub .t{color:var(--ink);font-size:.98rem;margin-top:3px}
+  .pub .a{color:var(--ink-faint);font-size:.86rem}
+
+  .subhead{font-family:var(--font-mono);font-size:.82rem;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--ink-faint);margin:26px 0 14px}
+
+  .awards li,.other li{list-style:none;padding:14px 0;border-bottom:1px solid var(--line);
+    display:flex;gap:14px;align-items:flex-start;color:var(--ink-dim)}
+  .awards li .medal{color:var(--accent);flex:none;font-size:1.1rem;line-height:1.6}
+  .other li .dot{color:var(--accent-2);flex:none}
+
+  /* footer */
+  footer{border-top:1px solid var(--line);padding:48px 0;text-align:center;color:var(--ink-faint);font-size:.85rem}
+  footer .big{font-family:var(--font-display);color:var(--ink);font-size:1.4rem;margin-bottom:10px}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(24px);transition:.8s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:820px){
+    nav.links{display:none}
+    .menu-btn{display:block}
+    nav.links.open{display:flex;position:absolute;top:64px;left:0;right:0;background:var(--bg-soft);
+      flex-direction:column;padding:12px;border-bottom:1px solid var(--line)}
+    .contact-card{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">Port<span>folio</span></div>
+    <button class="menu-btn" onclick="document.getElementById('nav').classList.toggle('open')">เมนู</button>
+    <nav class="links" id="nav">
+      <a href="#home">หน้าแรก</a>
+      <a href="#education">การศึกษา</a>
+      <a href="#work">ประวัติการทำงาน</a>
+      <a href="#teaching">การสอน</a>
+      <a href="#expertise">ความเชี่ยวชาญ</a>
+      <a href="#research">ผลงานวิจัย</a>
+      <a href="#speaker">วิทยากร</a>
+      <a href="#other">ผลงานอื่นๆ</a>
+      <a href="#awards">รางวัล</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="wrap hero-grid">
+    <div class="reveal">
+      <div class="eyebrow">Academic Portfolio</div>
+      <h1>ชื่อ <span class="thin">นามสกุล</span></h1>
+      <div class="role">ตำแหน่งทางวิชาการ / ตำแหน่งงาน — เขียนคำโปรยแนะนำตัวสั้นๆ ที่บอกความเชี่ยวชาญหลักของคุณ</div>
+      <div class="dept">หลักสูตร/สาขา · คณะ · มหาวิทยาลัย</div>
+
+      <div class="scholar">
+        <a href="#" target="_blank">Google Scholar ↗</a>
+        <a href="#" target="_blank">Scopus ↗</a>
+        <a href="#" target="_blank">ORCID ↗</a>
+        <a href="#" target="_blank">Web of Science ↗</a>
+      </div>
+
+      <div class="contact-card">
+        <div class="item"><div class="k">อีเมล</div><div class="v">your.email@example.ac.th</div></div>
+        <div class="item"><div class="k">โทรศัพท์</div><div class="v">0XX-XXX-XXXX</div></div>
+        <div class="item"><div class="k">คณะ / Faculty</div><div class="v">ชื่อคณะ</div></div>
+        <div class="item"><div class="k">สาขา / Program</div><div class="v">ชื่อสาขา</div></div>
+      </div>
+    </div>
+
+    <div class="reveal portrait">
+      <div class="ring"></div>
+      <div class="ph">วางรูปโปรไฟล์ที่นี่<br>(แทนที่กล่องนี้ด้วย &lt;img&gt;)</div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="block" id="education">
+  <div class="wrap reveal">
+    <div class="sec-head">
+      <span class="sec-no">01</span><h2>ประวัติการศึกษา</h2><span class="en">Education</span>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="yr">ปีที่จบ</div>
+        <div class="ti">ระดับปริญญา (สาขา)</div>
+        <div class="de">ชื่อสถาบัน · Degree (Field), University, Year</div>
+      </div>
+      <div class="tl-item">
+        <div class="yr">ปีที่จบ</div>
+        <div class="ti">ระดับปริญญา (สาขา)</div>
+        <div class="de">ชื่อสถาบัน · Degree (Field), University, Year</div>
+      </div>
+      <div class="tl-item">
+        <div class="yr">ปีที่จบ</div>
+        <div class="ti">ระดับปริญญา (สาขา)</div>
+        <div class="de">ชื่อสถาบัน · Degree (Field), University, Year</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="block" id="work">
+  <div class="wrap reveal">
+    <div class="sec-head">
+      <span class="sec-no">02</span><h2>ประวัติการทำงาน</h2><span class="en">Work Experience</span>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="yr">พ.ศ. XXXX – ปัจจุบัน</div>
+        <div class="ti">ตำแหน่ง</div>
+        <div class="de">ชื่อหน่วยงาน / บริษัท</div>
+      </div>
+      <div class="tl-item">
+        <div class="yr">พ.ศ. XXXX – XXXX</div>
+        <div class="ti">ตำแหน่ง</div>
+        <div class="de">ชื่อหน่วยงาน / บริษัท</div>
+      </div>
+      <div class="tl-item">
+        <div class="yr">พ.ศ. XXXX – XXXX</div>
+        <div class="ti">ตำแหน่ง</div>
+        <div class="de">ชื่อหน่วยงาน / บริษัท</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEACHING -->
+<section class="block" id="teaching">
+  <div class="wrap reveal">
+    <div class="sec-head">
+      <span class="sec-no">03</span><h2>ประสบการณ์การสอน</h2><span class="en">Teaching</span>
+    </div>
+    <div class="chips">
+      <span class="chip">รายวิชาที่ 1</span>
+      <span class="chip">รายวิชาที่ 2</span>
+      <span class="chip">รายวิชาที่ 3</span>
+      <span class="chip">รายวิชาที่ 4</span>
+      <span class="chip">รายวิชาที่ 5</span>
+      <span class="chip">รายวิชาที่ 6</span>
+      <span class="chip">รายวิชาที่ 7</span>
+      <span class="chip">รายวิชาที่ 8</span>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERTISE -->
+<section class="block" id="expertise">
+  <div class="wrap reveal">
+    <div class="sec-head">
+      <span class="sec-no">04</span><h2>สาขาที่เชี่ยวชาญ</h2><span class="en">Expertise & Interests</span>
+    </div>
+    <div class="grid3">
+      <div class="card">
+        <div class="tag">Focus</div>
+        <h3>ด้านที่เชี่ยวชาญ 1</h3>
+        <p>อธิบายสั้นๆ ว่าเชี่ยวชาญเรื่องนี้อย่างไร</p>
+      </div>
+      <div class="card">
+        <div class="tag">Focus</div>
+        <h3>ด้านที่เชี่ยวชาญ 2</h3>
+        <p>อธิบายสั้นๆ ว่าเชี่ยวชาญเรื่องนี้อย่างไร</p>
+      </div>
+      <div class="card">
+        <div class="tag">Focus</div>
+        <h3>ด้านที่เชี่ยวชาญ 3</h3>
+        <p>อธิบายสั้นๆ ว่าเชี่ยวชาญเรื่องนี้อย่างไร</p>
+      </div>
+    </div>
+    <div class="subhead">งานวิจัยที่สนใจ · Research Interests</div>
+    <div class="chips">
+      <span class="chip">หัวข้อ 1</span>
+      <span class="chip">หัวข้อ 2</span>
+      <span class="chip">หัวข้อ 3</span>
+      <span class="chip">หัวข้อ 4</span>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section class="block" id="research">
+  <div class="wrap reveal">
+    <div class="sec-head">
+      <span class="sec-no">05</span><h2>ผลงานวิจัย</h2><span class="en">Publications</span>
+    </div>
+
+    <div class="subhead">Journal Articles</div>
+    <div class="pub">
+      <div class="venue">Journal Name · Year</div>
+      <div class="t">ชื่อบทความวิจัย (Title of the paper)</div>
+      <div class="a">ชื่อผู้แต่ง et al. · Vol/Issue, pp.xx–xx</div>
+    </div>
+    <div class="pub">
+      <div class="venue">Journal Name · Year</div>
+      <div class="t">ชื่อบทความวิจัย (Title of the paper)</div>
+      <div class="a">ชื่อผู้แต่ง et al. · Vol/Issue, pp.xx–xx</div>
+    </div>
+
+    <div class="subhead">Conference Proceedings</div>
+    <div class="pub">
+      <div class="venue">Conference · Year</div>
+      <div class="t">ชื่อบทความ (Paper title)</div>
+      <div class="a">ชื่อผู้แต่ง · pp.xx–xx</div>
+    </div>
+    <div class="pub">
+      <div class="venue">Conference · Year</div>
+      <div class="t">ชื่อบทความ (Paper title)</div>
+      <div class="a">ชื่อผู้แต่ง · pp.xx–xx</div>
+    </div>
+  </div>
+</section>
+
+<!-- SPEAKER -->
+<section class="block" id="speaker">
+  <div class="wrap reveal">
+    <div class="sec-head">
+      <span class="sec-no">06</span><h2>วิทยากรอบรม</h2><span class="en">Invited Speaker</span>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="tag">หลักสูตร</div>
+        <h3>ชื่อหลักสูตร / หัวข้อที่บรรยาย</h3>
+        <p>หน่วยงานที่จัด · ปี</p>
+      </div>
+      <div class="card">
+        <div class="tag">หลักสูตร</div>
+        <h3>ชื่อหลักสูตร / หัวข้อที่บรรยาย</h3>
+        <p>หน่วยงานที่จัด · ปี</p>
+      </div>
+      <div class="card">
+        <div class="tag">หลักสูตร</div>
+        <h3>ชื่อหลักสูตร / หัวข้อที่บรรยาย</h3>
+        <p>หน่วยงานที่จัด · ปี</p>
+      </div>
+      <div class="card">
+        <div class="tag">หลักสูตร</div>
+        <h3>ชื่อหลักสูตร / หัวข้อที่บรรยาย</h3>
+        <p>หน่วยงานที่จัด · ปี</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OTHER -->
+<section class="block" id="other">
+  <div class="wrap reveal">
+    <div class="sec-head">
+      <span class="sec-no">07</span><h2>ผลงานด้านอื่น ๆ</h2><span class="en">Other Work & Certifications</span>
+    </div>
+    <ul class="other">
+      <li><span class="dot">▸</span><span>ใบรับรอง / Certification — ชื่อหลักสูตร (ปี)</span></li>
+      <li><span class="dot">▸</span><span>ประสบการณ์อื่นๆ — เช่น ผู้ทรงคุณวุฒิพิจารณาบทความ</span></li>
+      <li><span class="dot">▸</span><span>ผลงานพัฒนาระบบ / ซอฟต์แวร์ให้หน่วยงาน</span></li>
+      <li><span class="dot">▸</span><span>กรรมการ / คณะทำงานต่างๆ</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section class="block" id="awards">
+  <div class="wrap reveal">
+    <div class="sec-head">
+      <span class="sec-no">08</span><h2>รางวัลที่ได้รับ</h2><span class="en">Awards</span>
+    </div>
+    <ul class="awards">
+      <li><span class="medal">★</span><span><b>ชื่อรางวัล</b> — รายละเอียด / งานที่ได้รับ (ปี)</span></li>
+      <li><span class="medal">★</span><span><b>ชื่อรางวัล</b> — รายละเอียด / งานที่ได้รับ (ปี)</span></li>
+      <li><span class="medal">★</span><span><b>ชื่อรางวัล</b> — รายละเอียด / งานที่ได้รับ (ปี)</span></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="big">ติดต่อ · Get in touch</div>
+    <div>your.email@example.ac.th · 0XX-XXX-XXXX</div>
+    <div style="margin-top:16px">© 2026 ชื่อ นามสกุล · Portfolio</div>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  // close mobile menu on click
+  document.querySelectorAll('#nav a').forEach(a=>a.addEventListener('click',()=>document.getElementById('nav').classList.remove('open')));
+</script>
+</body>
+</html>
